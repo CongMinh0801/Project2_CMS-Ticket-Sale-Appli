@@ -1,0 +1,105 @@
+.pack__info {
+    margin-top: 24px;
+}
+
+.pack__info-item:nth-child(1) {
+    display: flex;
+}
+
+.pack__info-item-date-start {
+    width: 46%;
+}
+
+.pack__info-item-date-end {
+    width: 54%;
+}
+
+.pack__info-item-date-start input,
+.pack__info-item-date-end input{
+    margin-top: 6px;
+    height: 40px;
+    border: 1px solid #A5A8B1;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding-left: 12px;
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.pack__info-item:nth-child(2) {
+    margin-top: 24px;
+}
+
+.pack__info-item-price-single {
+    margin-top: 6px;
+    height: 40px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.pack__info-item-price-combo-check,
+.pack__info-item-price-single-check {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    margin-right: 12px;
+}
+
+.pack__info-item-price-combo-count,
+.pack__info-item-price-combo-input,
+.pack__info-item-price-single-input {
+    height: 40px;
+    width: 148px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid #e9eaec;
+    background-color: #e9eaec;
+    outline: none;
+    padding-left: 12px;
+    font-size: 16px;
+}
+
+.pack__info-item-price-combo-count{
+    width: 72px;
+}
+
+.pack__info-item-price-combo {
+    height: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.pack__info-item:nth-child(3) {
+    margin-top: 24px;
+}
+
+.pack__info-item-state {
+
+}
+
+.pack__info-item-state-select {
+    margin-top: 6px;
+    height: 40px;
+    font-size: 16px;
+    box-sizing: border-box;
+    padding:0 12px;
+    border: 1px solid #A5A8B1;
+    border-radius: 8px;
+}
+
+.pack__info-item-state-select-item {
+    height: 40px;
+    font-size: 16px;
+}
+
+.pack__info-item-state-message {
+    color: #1E0D03;
+    font-size: 12px;
+    margin-top: 16px;
+    margin-bottom: 32px;
+}
+
+.pack__info-item-state-message span {
+    color: red;
+}

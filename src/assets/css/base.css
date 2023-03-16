@@ -1,0 +1,31 @@
+:root {
+    --text-color:#1E0D03;
+    --white-color:#fff;
+    --primary-color: #FF993C;
+}
+
+.btn {
+    height: 48px;
+    line-height: 48px;
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    text-align: center;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+}
+
+.primary-btn:hover {
+    background-color: var(--white-color);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}

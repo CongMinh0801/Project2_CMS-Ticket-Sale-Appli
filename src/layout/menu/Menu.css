@@ -1,0 +1,53 @@
+.menu {
+    width: 18.5%;
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 16px 32px;
+}
+
+.menu__logo {
+
+}
+
+.menu__logo-img {
+    width: 132px;
+}
+
+.menu__list {
+    padding-top: 48px;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+}
+
+.menu__list-item {
+    color: var(--text-color);
+    height: 56px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 26px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+.menu__list-item.active{
+    color: var(--white-color);
+    background-color: #FFB800;
+} 
+
+.menu__list-item:hover {
+    background-color: #ffe08b;
+    color: var(--text-color);
+}
+
+
+.menu__list-item-setting-icon,
+.menu__list-item-list-icon,
+.menu__list-item-ticket-icon,
+.menu__list-item-home-icon {
+    margin-left: 26px;
+    margin-right: 20px;
+}
