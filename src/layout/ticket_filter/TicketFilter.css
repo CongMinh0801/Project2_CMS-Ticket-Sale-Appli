@@ -1,0 +1,130 @@
+
+.ticket-filter {
+    background-color: var(--white-color);
+    color: var(--text-color);
+    position: fixed;
+    width: 634px;
+    height: 454px;
+    left: 0;
+    right: 0;
+    top:0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 16px;
+    position: relative;
+    padding: 32px;
+    box-sizing: border-box;
+}
+
+.ticket-filter__title {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.ticket-filter__title h2 {
+    margin: 0;
+    text-align: center;
+}
+
+.ticket-filter__date {
+    display: flex;
+    margin-top: 26px;
+}
+
+.ticket-filter__date-end,
+.ticket-filter__date-start {
+    width: 50%;
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+}   
+
+.ticket-filter__date-end-input,
+.ticket-filter__date-start-input {
+    font-weight: 400;
+    height: 40px;
+    width: 144px;
+    border-radius: 8px;
+    border: 1px solid ;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 16px;
+    margin-top: 5px;
+    outline: none;
+    border: 1px solid var(--border-color);
+}
+
+.ticket-filter__date-end-input::-webkit-calendar-picker-indicator,
+.ticket-filter__date-start-input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.ticket-filter__state {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 26px;
+}  
+
+.ticket-filter__date-start-input-icon {
+    position: absolute;
+    left: 120px;
+    width: 20px;
+    top: 50%;
+    color: var(--primary-color);
+}
+
+.ticket-filter__state div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.ticket-filter__state-item {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+.ticket-filter__state-item input {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 3px;
+}
+
+.ticket-filter__gate {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 24px;
+}
+
+.ticket-filter__gate div {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.ticket-filter__gate-item {
+    width: 33.33%;
+    font-weight: 400;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.ticket-filter__gate-item input {
+    width: 24px;
+    height: 24px;
+}
+
+.ticket-filter__btn {
+    width: 160px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    position: absolute;
+    bottom: 23px;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -1,0 +1,87 @@
+.change-date {
+    background-color: var(--white-color);
+    width: 758px;
+    height: 365px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-radius: 16px;
+    padding: 0 32px;
+    box-sizing: border-box;
+}
+
+.change-date__title {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.change-date__ticket-id {
+    margin-top: 27px;
+}
+
+.change-date__expiry,
+.change-date__event,
+.change-date__ticket-type{
+    margin-top: 24px;
+}
+
+.change-date__expiry,
+.change-date__event,
+.change-date__ticket-type,
+.change-date__ticket-id {
+    display: flex;
+}
+
+.change-date__expiry span,
+.change-date__event span,
+.change-date__ticket-type span,
+.change-date__ticket-id span{
+    width: 28%;
+    font-weight: 600;
+}
+
+
+.change-date__expiry {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.change-date__expiry input{
+    height: 40px;
+    width: 142px;
+    outline: none;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+.change-date__expiry-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 312px;
+    width: 20px;
+    color: var(--primary-color);
+
+}
+
+.change-date__expiry input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+.change-date__btn {
+    text-align: center;
+    margin-top: 32px;
+}
+
+.change-date__btn-save,
+.change-date__btn-cancel {
+    padding: 0 60px;
+    margin: 0 24px;
+}
+

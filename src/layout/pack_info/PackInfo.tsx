@@ -1,5 +1,6 @@
 import React from "react";
 import "./PackInfo.css"
+import { Calendar } from "react-feather"
 
 export const PackInfo:React.FC = () => {
     return (
@@ -9,6 +10,7 @@ export const PackInfo:React.FC = () => {
                     Ngày áp dụng<br />
                     <div>
                         <input type="date" name="" id="" />
+                        <Calendar className="pack__info-item-date-calendar-icon"/>
                         <input type="time" name="" id="" />
                     </div>
                 </div>
@@ -16,6 +18,7 @@ export const PackInfo:React.FC = () => {
                     Ngày hết hạn<br />
                     <div>
                         <input type="date" name="" id="" />
+                        <Calendar className="pack__info-item-date-calendar-icon"/>
                         <input type="time" name="" id="" />
                     </div>
                 </div>

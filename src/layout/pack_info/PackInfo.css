@@ -14,6 +14,20 @@
     width: 54%;
 }
 
+.pack__info-item-date-start div,
+.pack__info-item-date-end div{
+    position: relative;
+}
+
+.pack__info-item-date-calendar-icon {
+    position: absolute;
+    left: 128px;
+    top: 60%;
+    transform: translateY(-50%);
+    width: 20px;
+    color: var(--primary-color);
+}
+
 .pack__info-item-date-start input,
 .pack__info-item-date-end input{
     margin-top: 6px;
@@ -22,8 +36,14 @@
     border-radius: 8px;
     box-sizing: border-box;
     padding-left: 12px;
+    padding-right: 12px;
     margin-right: 8px;
     font-size: 16px;
+} 
+
+.pack__info-item-date-start input::-webkit-calendar-picker-indicator,
+.pack__info-item-date-end input::-webkit-calendar-picker-indicator {
+    display: none;
 }
 
 .pack__info-item:nth-child(2) {
@@ -45,6 +65,12 @@
     margin: 0;
     margin-right: 12px;
 }
+/* 
+.pack__info-item-price-combo-check:checked,
+.pack__info-item-price-single-check:checked {
+    background-color: #27AEF9;
+    border-color: #27AEF9;
+} */
 
 .pack__info-item-price-combo-count,
 .pack__info-item-price-combo-input,
@@ -98,8 +124,12 @@
     font-size: 12px;
     margin-top: 16px;
     margin-bottom: 32px;
+    display: flex;
+    align-items: center;
 }
 
 .pack__info-item-state-message span {
     color: red;
+    padding-right: 8px;
+    font-size: 12px;
 }
