@@ -1,0 +1,145 @@
+.view_ticket_filter {
+    width: 446px;
+    background-color: var(--white-color);
+    box-sizing: border-box;
+    padding: 24px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.view_ticket_filter__title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 30px;
+}
+
+.view_ticket_filter__event {
+    position: relative;
+    margin-top: 30px;
+}
+
+.view_ticket_filter__event-select {
+    height: 40px;
+    width: 90%;
+    font-size: 16px;
+    line-height: 20px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    appearance: none;
+    position: relative;
+    border-radius: 8px;
+    background-color: #F1F4F8;
+    border: none;
+    outline: none;
+}
+
+.view_ticket_filter__event-icon {
+    color: var(--primary-color);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12%;
+}
+
+.view_ticket_filter__event-option {
+
+}
+
+.view_ticket_filter__status {
+    margin-top: 24px;
+    display: flex;
+    position: relative;
+}
+
+.view_ticket_filter__status-list {
+    position: absolute;
+    left: 182px;
+}
+.view_ticket_filter__status-list input {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+
+.view_ticket_filter__status-list div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.view_ticket_filter__types {
+    display: flex;
+    position: relative;
+    margin-top: 100px;
+}
+
+.view_ticket_filter__types span {
+    position: absolute;
+    font-weight: 400;
+    left: 182px;
+}
+
+.view_ticket_filter__date_start{
+    margin-top: 24px;
+}
+
+.view_ticket_filter__date_end {
+    margin-top: 40px;
+}
+
+.view_ticket_filter__date_end,
+.view_ticket_filter__date_start {
+    position: relative;
+}
+
+.view_ticket_filter__date_end input::-webkit-calendar-picker-indicator,
+.view_ticket_filter__date_start input::-webkit-calendar-picker-indicator{
+    display: none;
+}
+
+.view_ticket_filter__date_end input,
+.view_ticket_filter__date_start input {
+    height: 40px;
+    width: 192px;
+    font-size: 16px;
+    padding-left: 8px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background-color: #F7F8FB;
+    border-radius: 8px;
+}
+
+.view_ticket_filter__date_end div,
+.view_ticket_filter__date_start div{
+    position: absolute;
+    left: 182px;
+    top: 0;
+}
+
+.view_ticket_filter__date-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 12px;
+    color: var(--primary-color);
+    width: 24px;
+    height: 24px;
+}
+
+
+.view_ticket_filter__btn {
+    margin-top: 64px;
+    font-weight: 600;
+    font-size: 18px;
+    width: 33.33%;
+}
+
+.view_ticket_filter__btn-block {
+    display: flex;
+    justify-content: center;
+}

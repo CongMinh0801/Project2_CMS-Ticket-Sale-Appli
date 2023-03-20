@@ -1,0 +1,38 @@
+.view-search-btn {
+    display: flex;
+    align-items: center;
+}
+
+.view-search-btn__filter {
+    width: 128px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.view-search-btn__filter-icon {
+    width: 20px;
+    height: 18px;
+    margin-right: 12px;
+}
+
+.view-search-btn__export-file {
+    width: 180px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+
+.view-search-btn__check,
+.view-search-btn__add-ticket {
+    font-size: 18px;
+    font-weight: 600;
+    width: 164px;
+    margin-left: 24px;
+}
+
