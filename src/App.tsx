@@ -16,7 +16,7 @@ import { ViewTicketFilter } from './view/view_ticket_filter/view_ticket_filter';
 
 function App() {
   return (
-    <div className="App" style={{display:"flex", minHeight:"100vh"}}>
+    <div className="App" style={{display:"flex", minHeight:"100vh", backgroundColor: "#F9F6F4"}}>
       <ViewTicketFilter/>
     </div>
   )
