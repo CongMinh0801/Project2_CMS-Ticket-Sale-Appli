@@ -10,6 +10,7 @@ import { ChangeDate } from './layout/change_date/ChangeDate';
 import { ViewSearchBtn } from './view/view_search/view_search_btn/view_search_btn';
 import { ViewSearch } from './view/view_search/view_search';
 import { ViewTicketFilter } from './view/view_ticket_filter/view_ticket_filter';
+import { ViewList } from './view/view_list/view_list';
 
 
 
@@ -17,7 +18,7 @@ import { ViewTicketFilter } from './view/view_ticket_filter/view_ticket_filter';
 function App() {
   return (
     <div className="App" style={{display:"flex", minHeight:"100vh", backgroundColor: "#F9F6F4"}}>
-      <ViewTicketFilter/>
+      <ViewList/>
     </div>
   )
 }

@@ -1,0 +1,186 @@
+.view-list {
+    background-color: var(--white-color);
+    width: 100%;
+    font-size: 16px;
+    max-width: 1516px;
+}
+
+.view-list__titles {
+    display: flex;
+    width: 100%;
+    height: 56px;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 600;
+    background-color: #F1F4F8;
+}
+
+.view-list__titles div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.stt{
+    width: 8%;
+}
+
+.stt-2{
+    width: 10%;
+}
+
+.booking_code{
+    width: 10%;
+}
+
+.ticket_number {
+    width: 10%;
+}
+
+.ticket_number-2{
+    width: 12%;
+}
+
+.status {
+    width: 15%;
+    position: relative;
+}
+
+.use_date {
+    width: 10%;
+}
+
+.use_date-2{
+    width: 14%;
+}
+
+.use_create {
+    width: 10%;
+}
+
+.check_in_gate {
+    width: 13%;
+}
+
+.check_in_gate-2 {
+    width: 15%;
+}
+
+.event_name {
+    width: 24%;
+}
+.event_name-2{
+    width: 27%;
+}
+
+.type_ticket {
+    width: 10%;
+}
+
+.null_title {
+    width: 12%;
+}
+
+
+.pack_id {
+    width: 12%;
+}
+
+.pack_name {
+    width: 12%;
+}
+
+.start_date {
+    width: 13%;
+}
+
+.end_date {
+    width: 13%;
+}
+
+.ticket_price {
+    width: 13%;
+}
+
+.combo_price {
+    width: 17%;
+}
+
+
+.view-list__row {
+    display: flex;
+    height: 48px;
+    width: 100%;
+}
+
+.view-list__row div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.even_row {
+    background-color: #F7F8FB;
+}
+
+.update-icon {
+    color: var(--primary-color);
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+}
+
+.update_btn {
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.turn_off span{
+    position: absolute;
+    left: 40px;
+    height: 32px;
+    color: #FD5959;
+    border: 1px solid #FD5959;
+    background-color: #F8EBE8;
+    border-radius: 4px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+}
+
+.turn_on span{
+    position: absolute;
+    left: 40px;
+    height: 32px;
+    color: #03AC00;
+    border: 1px solid #03AC00;
+    background-color: #DEF7E0;
+    border-radius: 4px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+}
+
+.used span{
+    position: absolute;
+    left: 40px;
+    height: 32px;
+    color: #919DBA;
+    border: 1px solid #919DBA;
+    background-color: #EAF1F8;
+    border-radius: 4px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+}
+
+.status-icon {
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+}
+
+.null_title.checked {
+    color: #FD5959;
+}
