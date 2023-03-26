@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import "./view_list.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCircle, faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import {ticketListData, ticketCheckData, ticketPackData, renderFunction} from "./interface"
+import { testData1, testData2, testData3 } from './test_data';
 
 
-export const ViewList: React.FC = () => {
+interface ViewListProps {
+    typeOfList:string;
+}
+
+
+export const ViewList = (props:ViewListProps) => {
     const ticketListTitles: Array<{title:string, class:string}> = 
     [
         {title:"STT",class:"stt"}
@@ -37,42 +44,6 @@ export const ViewList: React.FC = () => {
         ,{title:" ",class:"null_title"}
     ]
 
-    interface ticketListData{
-        stt:string, 
-        booking_code:string, 
-        ticket_number:string, 
-        event_name:string,
-        status:string, 
-        use_date:string, 
-        use_create:string, 
-        check_in_gate:string
-    } 
-
-    interface ticketCheckData{
-        stt:string, 
-        ticket_number:string, 
-        event_name:string, 
-        use_date:string, 
-        type_ticket:string, 
-        check_in_gate:string, 
-        null_title:string
-    }
-
-    interface ticketPackData{
-        stt:string,
-        pack_id:string,
-        pack_name:string,
-        start_date:string,
-        end_date:string,
-        ticket_price:string,
-        combo_price:string,
-        status:string,
-        null_title:string
-    }
-
-    interface renderFunction {
-        (data:any,index:number):JSX.Element
-    }
 
     let count:number = 0;
 
@@ -124,96 +95,9 @@ export const ViewList: React.FC = () => {
         )
     }
 
-    // const testData:Array<ticketPackData> = [
-    //     {
-    //         stt:"",
-    //         pack_id:"ID01A",
-    //         pack_name:"Gói A",
-    //         start_date:"25/08/2002",
-    //         end_date:"30/09/2002",
-    //         ticket_price:"250.000",
-    //         combo_price:"400.000",
-    //         status:"Đang áp dụng",
-    //         null_title:"Cập nhật" 
-    //     },
-    //     {
-    //         stt:"",
-    //         pack_id:"ID03SAD",
-    //         pack_name:"Gói D",
-    //         start_date:"25/08/2002",
-    //         end_date:"30/09/2002",
-    //         ticket_price:"300.000",
-    //         combo_price:"2.700.000",
-    //         status:"Tắt",
-    //         null_title:"Cập nhật" 
-    //     },{
-    //         stt:"",
-    //         pack_id:"ID06S",
-    //         pack_name:"Gói E",
-    //         start_date:"25/08/2002",
-    //         end_date:"30/09/2002",
-    //         ticket_price:"350.000",
-    //         combo_price:"900.000",
-    //         status:"Đang áp dụng",
-    //         null_title:"Cập nhật" 
-    //     },
-    // ]
-
-    // const testData:Array<ticketCheckData> = [
-    //     {
-    //         stt:"", 
-    //         ticket_number:"ABCACB465", 
-    //         event_name:"Lễ hội đua thuyền trên sông Kiến Giang", 
-    //         use_date:"08/01/2002", 
-    //         type_ticket:"Vé cổng", 
-    //         check_in_gate:"Cổng 1", 
-    //         null_title:"Chưa đối soát"
-    //     },
-    //     {
-    //         stt:"", 
-    //         ticket_number:"ABH15654", 
-    //         event_name:"Lễ hội đua thuyền trên sông Kiến Giang", 
-    //         use_date:"03/11/2006", 
-    //         type_ticket:"Vé cổng", 
-    //         check_in_gate:"Cổng 1", 
-    //         null_title:"Đã đối soát"
-    //     }
-    // ]
-
-    const testData:Array<ticketListData> = [
-        {
-            stt:"", 
-            booking_code:"AKLSJHD", 
-            ticket_number:"1A456SA", 
-            event_name:"Lễ hội đua thuyền trên sông Kiến Giang",
-            status:"Hết hạn", 
-            use_date:"23/07/2012", 
-            use_create:"23/09/2012", 
-            check_in_gate:"Cổng 1"
-        }, {
-            stt:"", 
-            booking_code:"AKLSJHD", 
-            ticket_number:"1A456SA", 
-            event_name:"Lễ hội đua thuyền trên sông Kiến Giang",
-            status:"Chưa sử dụng", 
-            use_date:"23/07/2012", 
-            use_create:"23/09/2012", 
-            check_in_gate:"Cổng 1"
-        },{
-            stt:"", 
-            booking_code:"AKLSJHD", 
-            ticket_number:"1A456SA", 
-            event_name:"Lễ hội đua thuyền trên sông Kiến Giang",
-            status:"Đã sử dụng", 
-            use_date:"23/07/2012", 
-            use_create:"23/09/2012", 
-            check_in_gate:"Cổng 1"
-        },
-    ]
-
     let renderRow: renderFunction;
     let preView: Array<{title:string, class:string}>
-    const page_view:string = "ticket list"
+    const page_view:string = props.typeOfList
     if(page_view == "ticket list"){
         preView = ticketListTitles
         renderRow = renderRowList
@@ -227,19 +111,31 @@ export const ViewList: React.FC = () => {
         renderRow = renderRowPack
     }
 
+
     return (
         <div className='view-list'>
-            <div className='view-list__titles'>
+            <div className='view-list__container'>
+                <div className='view-list__titles'>
+                    {
+                        preView.map(item => <div className={item.class}>{item.title}</div>)
+                    }
+                </div>
                 {
-                    preView.map(item => <div className={item.class}>{item.title}</div>)
+                    (props.typeOfList == "ticket list" ? testData3 : props.typeOfList == "ticket check" ? testData2 : testData1).map((data, index) => 
+                    {
+                        return renderRow(data,index)
+                    })
                 }
             </div>
-            {
-                testData.map((data, index) => 
-                {
-                    return renderRow(data,index)
-                })
-            }
+            <div className='view-list__footer'>
+                <FontAwesomeIcon className='view-list__footer-caret' icon={faCaretLeft} />
+                <span className='view-list__footer-item list-pre'>1</span>
+                <span className='view-list__footer-item'>2</span>
+                <span className='view-list__footer-item'>3</span>
+                <span className='view-list__footer-item'>...</span>
+                <span className='view-list__footer-item'>20</span>
+                <FontAwesomeIcon className='view-list__footer-caret caret-active' icon={faCaretRight} />
+            </div>
         </div>
     )
 }

@@ -3,7 +3,11 @@ import { ViewSearchBtn } from './view_search_btn/view_search_btn';
 import { Search } from "react-feather"
 import "./view_search.css"
 
-export const ViewSearch: React.FC = () => {
+interface ViewSearchProps {
+    typeOfList: string;
+}
+
+export const ViewSearch = (props:ViewSearchProps) => {
     return (
         <div className='view-search'>
             {/* Chỗ này cần phải xử lí dữ liệu title */}
@@ -13,7 +17,7 @@ export const ViewSearch: React.FC = () => {
                     <input placeholder='Tìm bằng số vé' className='view-search__header-block-input' type="text" />
                     <Search className='view-search__header-block-icon'/>
                 </div>
-                <ViewSearchBtn />
+                <ViewSearchBtn typeOfList = {props.typeOfList}/>
             </div>
         </div>
     )

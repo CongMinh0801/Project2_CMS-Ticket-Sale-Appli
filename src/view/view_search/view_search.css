@@ -2,6 +2,12 @@
     height: 134px;
     width: 100%;
     background-color: var(--white-color);
+    padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    box-sizing: border-box;
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
 }
 
 .view-search__title {

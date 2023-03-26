@@ -2,7 +2,11 @@ import React from 'react';
 import { Calendar, ChevronDown } from 'react-feather';
 import "./view_ticket_filter.css";
 
-export const ViewTicketFilter: React.FC = () => {
+interface ViewTicketFilterProps {
+    thisDisplay:string
+}
+
+export const ViewTicketFilter = () => {
     return (
         <div className='view_ticket_filter'>
             <h2 className='view_ticket_filter__title'>Lọc vé</h2>
