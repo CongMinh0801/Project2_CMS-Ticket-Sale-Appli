@@ -10,7 +10,7 @@
 }
 
 .view-list__container {
-    max-height: 536px;
+    max-height: 632px;
 }
 
 .view-list__titles {
@@ -142,6 +142,8 @@
 .update_btn {
     color: var(--primary-color);
     cursor: pointer;
+    background-color: var(--white-color);
+    border: none;
 }
 
 .turn_off span{
@@ -227,4 +229,11 @@
     text-align: center;
     border-radius: 2px;
     line-height: 24px;
+}
+
+.changeUseDateBtn {
+    border: none;
+    background-color: var(--white-color);
+    margin-left: 24px;
+    cursor: pointer;
 }

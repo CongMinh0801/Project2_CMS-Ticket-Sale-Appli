@@ -6,14 +6,13 @@ import { Header } from "../../layout/header/Header"
 import { ViewList } from "../../view/view_list/view_list"
 import { ViewSearch } from "../../view/view_search/view_search"
 import { ViewTicketFilter } from "../../view/view_ticket_filter/view_ticket_filter"
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store"
 
 
-export interface ListPageProps {
-    typeOfPage: string;
-}
 
-
-export const ListPage = (props:ListPageProps) => {
+export const ListPage = () => {
+    const selected = useSelector((state: RootState) => state.menu.selected);
     return (
         <div className="list-page">
             <Menu/>
@@ -21,11 +20,11 @@ export const ListPage = (props:ListPageProps) => {
                 <div style={{height:"100%", borderBottomLeftRadius:"16px", borderBottomRightRadius:"16px"}}>
                     <Header/>
                     <div style={{height:"calc(100% - 88px)", display:"flex"}}>
-                        <div className="list-page__container-body" style={props.typeOfPage == "ticket check" ? {width:"70%"}:{width:"100%"}}>
-                            <ViewSearch typeOfList={props.typeOfPage}/>
-                            <ViewList typeOfList={props.typeOfPage}/>
+                        <div className="list-page__container-body" style={selected == "Check" ? {width:"70%"}:{width:"100%"}}>
+                            <ViewSearch/>
+                            <ViewList/>
                         </div>
-                        <div style={props.typeOfPage == "ticket check" ? {display:"block", width:"29%"}:{display:"none", width:"29%"}}>
+                        <div style={selected == "Check" ? {display:"block", width:"29%"}:{display:"none", width:"29%"}}>
                             <ViewTicketFilter />
                         </div>
                     </div>

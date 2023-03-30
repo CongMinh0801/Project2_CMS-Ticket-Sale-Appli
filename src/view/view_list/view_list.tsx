@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import "./view_list.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faCircle, faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faCircle, faCaretRight, faCaretLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import {ticketListData, ticketCheckData, ticketPackData, renderFunction} from "./interface"
 import { testData1, testData2, testData3 } from './test_data';
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../app/store"
+import { showChangeDate } from '../../layout/change_date/ChangeDateSlice';
+import { showPackUpdate } from '../../layout/pack_update/PackUpdateSlice';
 
 
-interface ViewListProps {
-    typeOfList:string;
-}
 
+export const ViewList = () => {
+    const selected = useSelector((state: RootState) => state.menu.selected);
 
-export const ViewList = (props:ViewListProps) => {
     const ticketListTitles: Array<{title:string, class:string}> = 
     [
         {title:"STT",class:"stt"}
@@ -46,6 +48,11 @@ export const ViewList = (props:ViewListProps) => {
 
 
     let count:number = 0;
+    const dispatch = useDispatch();
+    const ChangeDate = useSelector((state: RootState) => state.ChangeDate.Active_state);
+    const handleChangeDate = (active: string) => {
+        dispatch(showChangeDate(active));
+    };
 
     function renderRowList(data:ticketListData,index:number) {
         count++;
@@ -58,7 +65,7 @@ export const ViewList = (props:ViewListProps) => {
                 <div className={data.status=="Hết hạn"?"status turn_off":data.status=="Chưa sử dụng"?"status turn_on":"status used"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} />{data.status}</span></div>
                 <div className='use_date'>{data.use_date}</div>
                 <div className='use_create'>{data.use_create}</div>
-                <div className='check_in_gate'>{data.check_in_gate}</div>
+                <div className='check_in_gate'>{data.check_in_gate} <button className='changeUseDateBtn' onClick={() => handleChangeDate("show")}><FontAwesomeIcon icon={faEllipsisVertical} /></button></div>
             </div>
         )
     }
@@ -78,6 +85,9 @@ export const ViewList = (props:ViewListProps) => {
         )
     }
 
+    const handleShowPackUpdate = (active:string) => {
+        dispatch(showPackUpdate(active));
+    }
     function renderRowPack(data:ticketPackData,index:number){
         count++;
         return (
@@ -90,19 +100,19 @@ export const ViewList = (props:ViewListProps) => {
                 <div className='ticket_price'>{data.ticket_price}</div>
                 <div className='combo_price'>{data.combo_price}</div>
                 <div className={data.status=="Tắt"?"status turn_off":"status turn_on"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} /> {data.status}</span></div>
-                <div className='null_title update_btn'><FontAwesomeIcon className='update-icon' icon={faPenToSquare} />Cập nhật </div>
+                <button onClick={()=>handleShowPackUpdate("show")} className='null_title update_btn'><FontAwesomeIcon className='update-icon' icon={faPenToSquare} />Cập nhật </button>
             </div>
         )
     }
 
     let renderRow: renderFunction;
     let preView: Array<{title:string, class:string}>
-    const page_view:string = props.typeOfList
-    if(page_view == "ticket list"){
+    const page_view:string = selected
+    if(page_view == "List"){
         preView = ticketListTitles
         renderRow = renderRowList
     }
-    else if(page_view == "ticket check"){
+    else if(page_view == "Check"){
         preView = ticketCheckTitles
         renderRow = renderRowCheck
     }
@@ -121,7 +131,7 @@ export const ViewList = (props:ViewListProps) => {
                     }
                 </div>
                 {
-                    (props.typeOfList == "ticket list" ? testData3 : props.typeOfList == "ticket check" ? testData2 : testData1).map((data, index) => 
+                    (selected == "List" ? testData3 : selected == "Check" ? testData2 : testData1).map((data, index) => 
                     {
                         return renderRow(data,index)
                     })
