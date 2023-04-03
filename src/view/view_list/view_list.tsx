@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./view_list.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faCircle, faCaretRight, faCaretLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
@@ -8,11 +8,95 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../app/store"
 import { showChangeDate } from '../../layout/change_date/ChangeDateSlice';
 import { showPackUpdate } from '../../layout/pack_update/PackUpdateSlice';
+import { db } from "../../firebase-config"
+import { collection,getDocs,addDoc,updateDoc,deleteDoc,doc } from "firebase/firestore"
 
 
 
 export const ViewList = () => {
     const selected = useSelector((state: RootState) => state.menu.selected);
+    const [list, setList ] = useState([])
+    const [check, setCheck ] = useState([])
+    const [pack, setPack ] = useState([])
+    const listCollectionRef = collection(db, "ticket-list")
+    const checkCollectionRef = collection(db, "ticket-check")
+    const packCollectionRef = collection(db, "ticket-pack")
+
+    const [bookingCode,setBookingCode] = useState("") 
+    const [ticketNumber,setTicketNumber] = useState("") 
+    const [eventName,setEventName] = useState("")
+    const [status,setStatus] = useState("") 
+    const [useDate,setUseDate] = useState("") 
+    const [useCreate,setUseCreate] = useState("") 
+    const [checkInGate,setCheckInGate] = useState("")
+    const [packId,setPackId] = useState("")
+    const [packName,setPackName] = useState("")
+    const [startDate,setStartDate] = useState("")
+    const [endDate,setEndDate] = useState("")
+    const [ticketPrice,setTicketPrice] = useState("")
+    const [comboPrice,setComboPrice] = useState("")
+
+    let preViewArray: ReturnType<typeof collection>
+    if (selected == "List") {
+        preViewArray = listCollectionRef
+    } else if (selected == "Check"){
+        preViewArray = checkCollectionRef
+    } else {
+        preViewArray = packCollectionRef
+    }
+
+    
+
+    const createListItem = async () => {
+        await addDoc(preViewArray, {
+            bookingCode:bookingCode,
+            ticketNumber:ticketNumber,
+            eventName:eventName,
+            status:status,
+            useDate:useDate,
+            useCreate:useCreate,
+            checkInGate:checkInGate, })}
+
+
+    const createPackItem = async () => {
+        await addDoc(preViewArray, {
+            packId:packId,
+            packName:packName,
+            startDate:startDate,
+            endDate:endDate,
+            ticketPrice:ticketPrice,
+            comboPrice:comboPrice,
+            status:status,
+        })
+    } 
+
+    const updateListItem = async (ticketNumber:string, useDate:string) => {
+        const listDoc = doc(db, "ticket-list", ticketNumber)
+        const updateUseDate = { useDate: useDate }
+        await updateDoc(listDoc, updateUseDate)
+    }
+
+    const updatePackItem = async (ticketNumber:string, useDate:string) => {
+        const listDoc = doc(db, "ticket-pack", ticketNumber)
+        const updateUseDate = {
+            ackId:packId,
+            packName:packName,
+            startDate:startDate,
+            endDate:endDate,
+            ticketPrice:ticketPrice,
+            comboPrice:comboPrice,
+            status:status, }
+        await updateDoc(listDoc, updateUseDate)
+    }
+
+    useEffect(() => {
+        const getListTicket = async () => {
+          const data = await getDocs(listCollectionRef)
+        //   setList()
+        }
+    
+        getListTicket()
+      }, [])
 
     const ticketListTitles: Array<{title:string, class:string}> = 
     [

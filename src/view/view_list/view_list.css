@@ -215,6 +215,7 @@
 .view-list__footer-item {
     font-size: 14px;
     margin: 0 8px;
+    cursor: pointer;
 }
 
 .caret-active {

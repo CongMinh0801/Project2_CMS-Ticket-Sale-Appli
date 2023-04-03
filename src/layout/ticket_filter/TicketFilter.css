@@ -38,6 +38,12 @@
     margin-top: 26px;
 }
 
+.ticket-filter__date button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .ticket-filter__date-end,
 .ticket-filter__date-start {
     width: 50%;

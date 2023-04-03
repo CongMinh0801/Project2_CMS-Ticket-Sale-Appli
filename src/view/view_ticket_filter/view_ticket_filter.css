@@ -142,3 +142,9 @@
     display: flex;
     justify-content: center;
 }
+
+.show-calendar-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

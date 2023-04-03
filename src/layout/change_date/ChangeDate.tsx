@@ -4,6 +4,7 @@ import {Calendar} from "react-feather"
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
 import { showChangeDate } from './ChangeDateSlice';
+import { showCalendar } from '../calendar/CalendarSlice';
 
 export const ChangeDate:React.FC = () => {
     const ChangeDateState = useSelector((state: RootState) => state.ChangeDate.Active_state);
@@ -14,6 +15,10 @@ export const ChangeDate:React.FC = () => {
     }
     const handleSave = (active:string) => {
         dispatch(showChangeDate(active));
+    }
+
+    const handleShowCalendar = (active:string) => {
+        dispatch(showCalendar(active));
     }
 
     return (
@@ -35,7 +40,7 @@ export const ChangeDate:React.FC = () => {
                 <div className='change-date__expiry'>
                     <span>Hạn sử dụng</span>
                     <input type="date"/>
-                    <Calendar className='change-date__expiry-icon'/>
+                    <button onClick={() => handleShowCalendar("show")}><Calendar className='change-date__expiry-icon'/></button>
                 </div>
                 <div className='change-date__btn'>
                     <button onClick={() => handleCancer("hidden") } className='change-date__btn-cancel btn'>Hủy</button>

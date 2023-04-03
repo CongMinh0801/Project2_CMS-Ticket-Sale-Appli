@@ -82,6 +82,12 @@
     display: none;
 }
 
+.change-date__expiry button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .change-date__btn {
     text-align: center;
     margin-top: 32px;
