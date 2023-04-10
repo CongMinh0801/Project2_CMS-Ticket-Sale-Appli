@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
 import { showTicketFilter } from "./TicketFilterSlice";
 import { showCalendar } from "../calendar/CalendarSlice";
+import { MyCalendar } from "../calendar/Calendar";
+import { changeInputName } from "../../view/view_ticket_filter/inputNameSlice";
 
 
 
@@ -14,9 +16,40 @@ export const TicketFilter:React.FC = () => {
     const handleShowFilter = (active:string) => {
         dispatch(showTicketFilter(active));
     }
-    const handleShowCalendar = (active:string) => {
+    
+    const handleShowCalendar = (active:string, input:string) => {
         dispatch(showCalendar(active));
+        dispatch(changeInputName(input));
     }
+
+    const inputName = useSelector((state: RootState) => state.InputName.Active_state);
+    const [selectedDay,setSelectedDay] = useState<string>("dd/mm/yyyy")
+    const [startDayActive,setStartDayActive] = useState<string>("dd/mm/yyyy")
+    const [endDayActive,setEndDayActive] = useState<string>("dd/mm/yyyy")
+    const [useDayActive,setUseDayActive] = useState<string>("dd/mm/yyyy")
+    useEffect(() => {
+        
+    }, [selectedDay]);
+
+    useEffect(() => {
+        
+    }, [startDayActive]);
+    useEffect(() => {
+        
+    }, [endDayActive]);
+    useEffect(() => {
+        
+    }, [useDayActive]);
+
+    useEffect(() => {
+        if (inputName === "start-input") {
+          setStartDayActive(selectedDay);
+        } else if (inputName === "end-input") {
+          setEndDayActive(selectedDay);
+        } else {
+          setUseDayActive(selectedDay);
+        }
+    }, [selectedDay]);
 
     const [selectedRadioOption, setSelectedRadioOption] = useState('');
     const handleOptionRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,15 +89,15 @@ export const TicketFilter:React.FC = () => {
                 <div className="ticket-filter__date">
                     <div className="ticket-filter__date-start">
                         Từ ngày <br />
-                        <input className="ticket-filter__date-start-input" type="date" />
-                        <button onClick={()=>handleShowCalendar("show")}>
+                        <input disabled className="ticket-filter__date-start-input" type="text" value={startDayActive} placeholder={startDayActive}/>
+                        <button onClick={()=>handleShowCalendar("show","start-input")}>
                             <Calendar className="ticket-filter__date-start-input-icon"/>
                         </button>
                     </div>
                     <div className="ticket-filter__date-end">
                         Đến ngày <br />
-                        <input className="ticket-filter__date-end-input" type="date" />
-                        <button onClick={()=>handleShowCalendar("show")}>
+                        <input disabled className="ticket-filter__date-end-input" type="text" value={endDayActive} placeholder={endDayActive}/>
+                        <button onClick={()=>handleShowCalendar("show","end-input")}>
                             <Calendar className="ticket-filter__date-start-input-icon"/>
                         </button>
                     </div>
@@ -123,6 +156,7 @@ export const TicketFilter:React.FC = () => {
                     Lọc
                 </button>
             </div>
+        <MyCalendar setSelectedDay = {setSelectedDay}/>
         </div>
     )
 }

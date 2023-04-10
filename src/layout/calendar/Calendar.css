@@ -97,7 +97,11 @@
 
 .days li {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .days button {
@@ -105,4 +109,9 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.selected-day {
+    background-color: #FFBA7B;
+    border-radius: 50%;
 }

@@ -28,37 +28,35 @@ export const HomePage: React.FC = () => {
       <div className="container-fluid mb-3 mt-3">
         <h2>Thống kê</h2>
         <Chart
-          type="area"
-          width={1488}
-          height={327}
-          series={[
-            {
-              name: "Doanh thu",
-              data: [144, 159, 132, 204, 200, 206, 222, 242, 236, 240, 182,164],
-            },
-          ]}
-          options={{
-            title: {
-              text: "Doanh thu",
-              style: { fontSize: 20, fontFamily: "Montserrat", fontWeight: "700" },
-            },
-            colors: ["#FAA05F"],
-            stroke: { width: 3, curve: "smooth" },
-            //fill:{opacity:1, type:'solid'},
-            xaxis: {
-              title: {
-                text: "",
-                style: { fontSize: 20, color: "#FAA05F" },
-              },
-              categories: getDatayear,
-            },
-            yaxis: {
-              title: {
-                text: "",
-                style: { fontSize: 20 },
-              },
-            },
-          }}/>
+  type="area"
+  width={`${1488}`}
+  height={`${327}`}
+  series={[    {      name: "Doanh thu",      data: [144, 159, 132, 204, 200, 206, 222, 242, 236, 240, 182,164],
+    },
+  ]}
+  options={{
+    title: {
+      text: "Doanh thu",
+      style: { fontSize: "20px", fontFamily: "Montserrat", fontWeight: "700" },
+    },
+    colors: ["#FAA05F"],
+    stroke: { width: 3, curve: "smooth" },
+    //fill:{opacity:1, type:'solid'},
+    xaxis: {
+      title: {
+        text: "",
+        style: { fontSize: "20px", color: "#FAA05F" },
+      },
+      categories: getDatayear,
+    },
+    yaxis: {
+      title: {
+        text: "",
+        style: { fontSize: "20px" },
+      },
+    },
+  }}
+/>
       </div>
 
       <div className="total-revenue">

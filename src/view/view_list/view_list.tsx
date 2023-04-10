@@ -3,24 +3,33 @@ import "./view_list.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faCircle, faCaretRight, faCaretLeft, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import {ticketListData, ticketCheckData, ticketPackData, renderFunction} from "./interface"
-import { testData1, testData2, testData3 } from './test_data';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../app/store"
 import { showChangeDate } from '../../layout/change_date/ChangeDateSlice';
 import { showPackUpdate } from '../../layout/pack_update/PackUpdateSlice';
 import { db } from "../../firebase-config"
-import { collection,getDocs,addDoc,updateDoc,deleteDoc,doc } from "firebase/firestore"
+import { collection,getDocs,addDoc,updateDoc,deleteDoc,doc, CollectionReference, DocumentData } from "firebase/firestore"
 
 
 
 export const ViewList = () => {
     const selected = useSelector((state: RootState) => state.menu.selected);
-    const [list, setList ] = useState([])
-    const [check, setCheck ] = useState([])
-    const [pack, setPack ] = useState([])
-    const listCollectionRef = collection(db, "ticket-list")
-    const checkCollectionRef = collection(db, "ticket-check")
-    const packCollectionRef = collection(db, "ticket-pack")
+    const [list, setList] = React.useState<{ id: string }[]>([]);
+    
+    const listCollectionRef: CollectionReference<DocumentData> = collection(db, "ticket-list");
+    const packCollectionRef: CollectionReference<DocumentData> = collection(db, "ticket-pack");
+
+    console.log("Aaaaaâ")
+    console.log(listCollectionRef)
+
+    let preViewArray: CollectionReference<DocumentData>;
+    if (selected === "List") {
+        preViewArray = listCollectionRef;
+    } else if (selected === "Check") {
+        preViewArray = listCollectionRef;
+    } else {
+        preViewArray = packCollectionRef;
+    }
 
     const [bookingCode,setBookingCode] = useState("") 
     const [ticketNumber,setTicketNumber] = useState("") 
@@ -35,19 +44,12 @@ export const ViewList = () => {
     const [endDate,setEndDate] = useState("")
     const [ticketPrice,setTicketPrice] = useState("")
     const [comboPrice,setComboPrice] = useState("")
+    const [nullTitle,setNullTitle] = useState("")
 
-    let preViewArray: ReturnType<typeof collection>
-    if (selected == "List") {
-        preViewArray = listCollectionRef
-    } else if (selected == "Check"){
-        preViewArray = checkCollectionRef
-    } else {
-        preViewArray = packCollectionRef
-    }
 
     
 
-    const createListItem = async () => {
+    const createTicketListItem = async () => {
         await addDoc(preViewArray, {
             bookingCode:bookingCode,
             ticketNumber:ticketNumber,
@@ -55,10 +57,11 @@ export const ViewList = () => {
             status:status,
             useDate:useDate,
             useCreate:useCreate,
-            checkInGate:checkInGate, })}
+            checkInGate:checkInGate,
+            nullTitle:nullTitle })}
 
 
-    const createPackItem = async () => {
+    const createTicketPackItem = async () => {
         await addDoc(preViewArray, {
             packId:packId,
             packName:packName,
@@ -70,16 +73,29 @@ export const ViewList = () => {
         })
     } 
 
-    const updateListItem = async (ticketNumber:string, useDate:string) => {
-        const listDoc = doc(db, "ticket-list", ticketNumber)
+    const updateTicketListItem = async (id:string, useDate:string) => {
+        const listDoc = doc(db, "ticket-list", id)
         const updateUseDate = { useDate: useDate }
         await updateDoc(listDoc, updateUseDate)
     }
 
-    const updatePackItem = async (ticketNumber:string, useDate:string) => {
-        const listDoc = doc(db, "ticket-pack", ticketNumber)
+    const updateTicketCheckItem = async (id:string) => {
+        const listDoc = doc(db, "ticket-list", id)
+        const updateNullTitle = { nullTitle: "Đã đối soát" }
+        await updateDoc(listDoc, updateNullTitle)
+    }
+
+    const updateTicketPackItem = async (id:string, 
+                                        packId:string, 
+                                        packName:string, 
+                                        startDate:string, 
+                                        endDate:string, 
+                                        ticketPrice:string, 
+                                        comboPrice:string, 
+                                        status:string) => {
+        const listDoc = doc(db, "ticket-pack", id)
         const updateUseDate = {
-            ackId:packId,
+            packId:packId,
             packName:packName,
             startDate:startDate,
             endDate:endDate,
@@ -91,12 +107,18 @@ export const ViewList = () => {
 
     useEffect(() => {
         const getListTicket = async () => {
-          const data = await getDocs(listCollectionRef)
-        //   setList()
-        }
+            const data = await getDocs(preViewArray);
+            if (selected === "List") {
+                setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            } else if (selected === "Check") {
+                setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            } else {
+                setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            }
+        };
     
-        getListTicket()
-      }, [])
+        getListTicket();
+    }, [selected]);
 
     const ticketListTitles: Array<{title:string, class:string}> = 
     [
@@ -133,7 +155,6 @@ export const ViewList = () => {
 
     let count:number = 0;
     const dispatch = useDispatch();
-    const ChangeDate = useSelector((state: RootState) => state.ChangeDate.Active_state);
     const handleChangeDate = (active: string) => {
         dispatch(showChangeDate(active));
     };
@@ -143,13 +164,13 @@ export const ViewList = () => {
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
                 <div className='stt'>{count}</div>
-                <div className='booking_code'>{data.booking_code}</div>
-                <div className='ticket_number'>{data.ticket_number}</div>
-                <div className='event_name'>{data.event_name}</div>
+                <div className='booking_code'>{data.bookingCode}</div>
+                <div className='ticket_number'>{data.ticketNumber}</div>
+                <div className='event_name'>{data.eventName}</div>
                 <div className={data.status=="Hết hạn"?"status turn_off":data.status=="Chưa sử dụng"?"status turn_on":"status used"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} />{data.status}</span></div>
-                <div className='use_date'>{data.use_date}</div>
-                <div className='use_create'>{data.use_create}</div>
-                <div className='check_in_gate'>{data.check_in_gate} <button className='changeUseDateBtn' onClick={() => handleChangeDate("show")}><FontAwesomeIcon icon={faEllipsisVertical} /></button></div>
+                <div className='use_date'>{data.useDate}</div>
+                <div className='use_create'>{data.useCreate}</div>
+                <div className='check_in_gate'>{data.checkInGate} <button className='changeUseDateBtn' onClick={() => handleChangeDate("show")}><FontAwesomeIcon icon={faEllipsisVertical} /></button></div>
             </div>
         )
     }
@@ -159,12 +180,12 @@ export const ViewList = () => {
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
                 <div className='stt-2'>{count}</div>
-                <div className='ticket_number-2'>{data.ticket_number}</div>
-                <div className='event_name-2'>{data.event_name}</div>
-                <div className='use_date-2'>{data.use_date}</div>
-                <div className='type_ticket'>{data.type_ticket}</div>
-                <div className='check_in_gate-2'>{data.check_in_gate}</div>
-                <div className={data.null_title=="Chưa đối soát"?"null_title":"null_title checked"}><i>{data.null_title}</i></div>
+                <div className='ticket_number-2'>{data.ticketNumber}</div>
+                <div className='event_name-2'>{data.eventName}</div>
+                <div className='use_date-2'>{data.useDate}</div>
+                <div className='type_ticket'>{"Vé cổng"}</div>
+                <div className='check_in_gate-2'>{data.checkInGate}</div>
+                <div className={data.nullTitle=="Chưa đối soát"?"null_title":"null_title checked"}><i>{data.nullTitle}</i></div>
             </div>
         )
     }
@@ -177,12 +198,12 @@ export const ViewList = () => {
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
                 <div className='stt'>{count}</div>
-                <div className='pack_id'>{data.pack_id}</div>
-                <div className='pack_name'>{data.pack_name}</div>
-                <div className='start_date'>{data.start_date}</div>
-                <div className='end_date'>{data.end_date}</div>
-                <div className='ticket_price'>{data.ticket_price}</div>
-                <div className='combo_price'>{data.combo_price}</div>
+                <div className='pack_id'>{data.packId}</div>
+                <div className='pack_name'>{data.packName}</div>
+                <div className='start_date'>{data.startDate}</div>
+                <div className='end_date'>{data.endDate}</div>
+                <div className='ticket_price'>{data.ticketPrice}</div>
+                <div className='combo_price'>{data.comboPrice}</div>
                 <div className={data.status=="Tắt"?"status turn_off":"status turn_on"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} /> {data.status}</span></div>
                 <button onClick={()=>handleShowPackUpdate("show")} className='null_title update_btn'><FontAwesomeIcon className='update-icon' icon={faPenToSquare} />Cập nhật </button>
             </div>
@@ -215,7 +236,7 @@ export const ViewList = () => {
                     }
                 </div>
                 {
-                    (selected == "List" ? testData3 : selected == "Check" ? testData2 : testData1).map((data, index) => 
+                    (list).map((data, index) => 
                     {
                         return renderRow(data,index)
                     })

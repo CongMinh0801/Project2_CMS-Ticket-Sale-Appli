@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import "./ChangeDate.css"
 import {Calendar} from "react-feather"
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
 import { showChangeDate } from './ChangeDateSlice';
 import { showCalendar } from '../calendar/CalendarSlice';
+import { MyCalendar } from '../calendar/Calendar';
+import { changeInputName } from '../../view/view_ticket_filter/inputNameSlice';
 
 export const ChangeDate:React.FC = () => {
     const ChangeDateState = useSelector((state: RootState) => state.ChangeDate.Active_state);
@@ -17,9 +19,39 @@ export const ChangeDate:React.FC = () => {
         dispatch(showChangeDate(active));
     }
 
-    const handleShowCalendar = (active:string) => {
+    const handleShowCalendar = (active:string, input:string) => {
         dispatch(showCalendar(active));
+        dispatch(changeInputName(input));
     }
+
+    const inputName = useSelector((state: RootState) => state.InputName.Active_state);
+    const [selectedDay,setSelectedDay] = useState<string>("dd/mm/yyyy")
+    const [startDayActive,setStartDayActive] = useState<string>("dd/mm/yyyy")
+    const [endDayActive,setEndDayActive] = useState<string>("dd/mm/yyyy")
+    const [useDayActive,setUseDayActive] = useState<string>("dd/mm/yyyy")
+    useEffect(() => {
+        
+    }, [selectedDay]);
+
+    useEffect(() => {
+        
+    }, [startDayActive]);
+    useEffect(() => {
+        
+    }, [endDayActive]);
+    useEffect(() => {
+        
+    }, [useDayActive]);
+
+    useEffect(() => {
+        if (inputName === "start-input") {
+          setStartDayActive(selectedDay);
+        } else if (inputName === "end-input") {
+          setEndDayActive(selectedDay);
+        } else {
+          setUseDayActive(selectedDay);
+        }
+    }, [selectedDay]);
 
     return (
         <div className='change-date-back' style={ChangeDateState == "hidden" ? {display:"none"} : {display:"block"}}>
@@ -39,14 +71,15 @@ export const ChangeDate:React.FC = () => {
                 </div>
                 <div className='change-date__expiry'>
                     <span>Hạn sử dụng</span>
-                    <input type="date"/>
-                    <button onClick={() => handleShowCalendar("show")}><Calendar className='change-date__expiry-icon'/></button>
+                    <input disabled type="text" value={useDayActive} placeholder={useDayActive}/>
+                    <button onClick={() => handleShowCalendar("show","use-input")}><Calendar className='change-date__expiry-icon'/></button>
                 </div>
                 <div className='change-date__btn'>
                     <button onClick={() => handleCancer("hidden") } className='change-date__btn-cancel btn'>Hủy</button>
                     <button onClick={() => handleSave("hidden") } className='change-date__btn-save btn primary-btn'>Lưu</button>
                 </div>
             </div>
+        <MyCalendar setSelectedDay = {setSelectedDay}/>
         </div>
     )
 }

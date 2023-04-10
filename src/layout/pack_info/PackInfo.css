@@ -32,6 +32,7 @@
 .pack__info-item-date-end input{
     margin-top: 6px;
     height: 40px;
+    max-width: 160px;
     border: 1px solid #A5A8B1;
     border-radius: 8px;
     box-sizing: border-box;

@@ -1,14 +1,47 @@
 import React, { useEffect, useState } from "react";
 import "./PackInfo.css"
 import { Calendar } from "react-feather"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showCalendar } from "../calendar/CalendarSlice";
+import { MyCalendar } from "../calendar/Calendar";
+import { RootState } from "../../app/store";
+import { changeInputName } from "../../view/view_ticket_filter/inputNameSlice";
 
 export const PackInfo:React.FC = () => {
     const dispatch = useDispatch();
-    const handleShowCalendar = (active:string) => {
+    const handleShowCalendar = (active:string, input:string) => {
         dispatch(showCalendar(active));
+        dispatch(changeInputName(input));
     }
+
+    const inputName = useSelector((state: RootState) => state.InputName.Active_state);
+    const [selectedDay,setSelectedDay] = useState<string>("dd/mm/yyyy")
+    const [startDayActive,setStartDayActive] = useState<string>("dd/mm/yyyy")
+    const [endDayActive,setEndDayActive] = useState<string>("dd/mm/yyyy")
+    const [useDayActive,setUseDayActive] = useState<string>("dd/mm/yyyy")
+    useEffect(() => {
+        
+    }, [selectedDay]);
+
+    useEffect(() => {
+        
+    }, [startDayActive]);
+    useEffect(() => {
+        
+    }, [endDayActive]);
+    useEffect(() => {
+        
+    }, [useDayActive]);
+
+    useEffect(() => {
+        if (inputName === "start-input") {
+          setStartDayActive(selectedDay);
+        } else if (inputName === "end-input") {
+          setEndDayActive(selectedDay);
+        } else {
+          setUseDayActive(selectedDay);
+        }
+    }, [selectedDay]);
 
 
     const [CheckBoxValues, setCheckBoxValues] = useState<string[]>([]);
@@ -32,8 +65,8 @@ export const PackInfo:React.FC = () => {
                 <div className="pack__info-item-date-start">
                     Ngày áp dụng<br />
                     <div>
-                        <input type="date" name="" id="" />
-                        <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show")}>
+                        <input disabled type="text" value={startDayActive} placeholder={startDayActive}/>
+                        <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","start-input")}>
                             <Calendar className="pack__info-item-date-calendar-icon"/>
                         </button>
                         <input type="time" name="" id="" />
@@ -42,8 +75,8 @@ export const PackInfo:React.FC = () => {
                 <div className="pack__info-item-date-end">
                     Ngày hết hạn<br />
                     <div>
-                        <input type="date" name="" id="" />
-                        <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show")}>
+                        <input disabled type="text" value={endDayActive} placeholder={endDayActive}/>
+                        <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","end-input")}>
                             <Calendar className="pack__info-item-date-calendar-icon"/>
                         </button>
                         <input type="time" name="" id="" />
@@ -71,6 +104,7 @@ export const PackInfo:React.FC = () => {
                     <p className="pack__info-item-state-message"><span>*</span>là thông tin bắt buộc</p>
                 </div>
             </div>
+        <MyCalendar setSelectedDay = {setSelectedDay}/>
         </div>
     )
 }

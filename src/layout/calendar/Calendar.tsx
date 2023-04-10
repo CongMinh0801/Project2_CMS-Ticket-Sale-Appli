@@ -1,35 +1,32 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import "./Calendar.css"
 import {ChevronLeft, ChevronRight, X} from "react-feather"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { showCalendar } from "./CalendarSlice";
-import { setStartDay } from "./StartDaySlice";
-import { setEndDay } from "./EndDaySlice";
-import { setUseDay } from "./UseDaySlice";
 
-
-interface MyCalendarProps {
-    inputName:string
+interface CalendarProps {
+    setSelectedDay:React.Dispatch<React.SetStateAction<string>>
 }
 
-export const MyCalendar = ({inputName}:MyCalendarProps) => {
+export const MyCalendar = ({setSelectedDay}:CalendarProps) => {
     const CalendarState = useSelector((state: RootState) => state.Calendar.Active_state);
-    const StartDay = useSelector((state: RootState) => state.StartDay.start_day);
     const dispatch = useDispatch();
+
     const handleShowCalendar = (active:string) => {
         dispatch(showCalendar(active));
     }
-    const handleClickDate = (date:string) => {
-        if (inputName == "start-input") {
-            dispatch(setStartDay(date))
-        } else if (inputName == "end-input"){
-            dispatch(setEndDay(date))
-        } else {
-            dispatch(setUseDay(date))
-        }
-    }
 
+    const handleClickDate = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const selectedDay = document.querySelector(".selected-day");
+        if (selectedDay) {
+            selectedDay.classList.remove("selected-day");
+        }
+        const clickedDay = event.target as HTMLElement;
+        clickedDay.classList.add("selected-day");
+        setSelectedDay(clickedDay.id)
+        
+    }
 
 
     const [date, setDate] = useState(new Date());
@@ -48,19 +45,19 @@ export const MyCalendar = ({inputName}:MyCalendarProps) => {
 
         for (let i = firstDayofMonth -1; i > 0; i--) {
             items.push(
-                <button onClick={()=>handleClickDate(`${lastDateofLastMonth - i + 1}/${currMonth}/${currYear}`)}>
+                <button>
                     <li className="not-this-month">{lastDateofLastMonth - i + 1}</li>
                 </button>);
         }
         for (let i = 1; i <= lastDateofMonth; i++) {
             items.push(
-                <button onClick={()=>handleClickDate(`${i}/${currMonth}/${currYear}`)}>
-                    <li className="this-month">{i}</li>
+                <button onClick={(event)=>handleClickDate(event)}>
+                    <li id={`${i}/${currMonth+1}/${currYear}`} className="this-month">{i}</li>
                 </button>);
         }
         for (let i = lastDayofMonth ; i < 6; i++) {
             items.push(
-                <button onClick={()=>handleClickDate(`${i - lastDayofMonth + 1}/${currMonth}/${currYear}`)}>
+                <button>
                     <li className="not-this-month">{i - lastDayofMonth + 1}</li>
                 </button>);
         }

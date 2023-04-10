@@ -1,35 +1,36 @@
 
 export interface ticketListData{
     stt:string, 
-    booking_code:string, 
-    ticket_number:string, 
-    event_name:string,
+    bookingCode:string, 
+    ticketNumber:string, 
+    eventName:string,
     status:string, 
-    use_date:string, 
-    use_create:string, 
-    check_in_gate:string
+    useDate:string, 
+    useCreate:string, 
+    checkInGate:string,
+    nullTitle:string
 } 
 
 export interface ticketCheckData{
     stt:string, 
-    ticket_number:string, 
-    event_name:string, 
-    use_date:string, 
-    type_ticket:string, 
-    check_in_gate:string, 
-    null_title:string
+    ticketNumber:string, 
+    eventName:string, 
+    useDate:string, 
+    typeTicket:string, 
+    checkInGate:string, 
+    nullTitle:string
 }
 
 export interface ticketPackData{
     stt:string,
-    pack_id:string,
-    pack_name:string,
-    start_date:string,
-    end_date:string,
-    ticket_price:string,
-    combo_price:string,
+    packId:string,
+    packName:string,
+    startDate:string,
+    endDate:string,
+    ticketPrice:string,
+    comboPrice:string,
     status:string,
-    null_title:string
+    nullTitle:string
 }
 
 export interface renderFunction {

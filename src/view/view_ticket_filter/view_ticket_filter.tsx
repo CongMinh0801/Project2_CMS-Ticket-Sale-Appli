@@ -1,30 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, ChevronDown } from 'react-feather';
 import "./view_ticket_filter.css";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { showCalendar } from '../../layout/calendar/CalendarSlice';
-import { RootState } from '../../app/store';
 import { MyCalendar } from '../../layout/calendar/Calendar';
+import { changeInputName } from './inputNameSlice';
+import { RootState } from '../../app/store';
 
-interface ViewTicketFilterProps {
-    thisDisplay:string
-}
 
 export const ViewTicketFilter = () => {
-    const CalendarState = useSelector((state: RootState) => state.Calendar.Active_state);
-    const StartDay = useSelector((state: RootState) => state.StartDay.start_day);
-    const EndDay = useSelector((state: RootState) => state.EndDay.end_day);
     const dispatch = useDispatch();
-    const [inputName, setInputName] = useState<string>("")
-    useEffect(() => {
-        
-    }, [inputName]);
-    const handleShowCalendar = (active:string, dateString:string) => {
+
+    const handleShowCalendar = (active:string, input:string) => {
         dispatch(showCalendar(active));
-        setInputName(dateString=="start"?"start-input":"end-input")
+        dispatch(changeInputName(input));
     }
 
-    console.log(StartDay)
+    const inputName = useSelector((state: RootState) => state.InputName.Active_state);
+    const [selectedDay,setSelectedDay] = useState<string>("dd/mm/yyyy")
+    const [startDayActive,setStartDayActive] = useState<string>("dd/mm/yyyy")
+    const [endDayActive,setEndDayActive] = useState<string>("dd/mm/yyyy")
+    const [useDayActive,setUseDayActive] = useState<string>("dd/mm/yyyy")
+    useEffect(() => {
+        
+    }, [selectedDay]);
+
+    useEffect(() => {
+        
+    }, [startDayActive]);
+    useEffect(() => {
+        
+    }, [endDayActive]);
+    useEffect(() => {
+        
+    }, [useDayActive]);
+
+    useEffect(() => {
+        if (inputName === "start-input") {
+          setStartDayActive(selectedDay);
+        } else if (inputName === "end-input") {
+          setEndDayActive(selectedDay);
+        } else {
+          setUseDayActive(selectedDay);
+        }
+    }, [selectedDay]);
+    
 
     const [selectedRadioOption, setSelectedRadioOption] = useState('');
     const handleOptionRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,8 +80,8 @@ export const ViewTicketFilter = () => {
             <div className='view_ticket_filter__date_start'>
                 Từ ngày
                 <div>
-                    <input type="text" placeholder={StartDay}/>
-                    <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","start")}>
+                    <input disabled type="text" value={startDayActive} placeholder={startDayActive}/>
+                    <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","start-input")}>
                         <Calendar className='view_ticket_filter__date-icon'/>    
                     </button>
                 </div>
@@ -69,8 +89,8 @@ export const ViewTicketFilter = () => {
             <div className='view_ticket_filter__date_end'>
                 Đến ngày
                 <div>
-                    <input type="text" placeholder={EndDay}/>
-                    <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","end")}>
+                    <input disabled type="text" value={endDayActive} placeholder={endDayActive}/>
+                    <button className='show-calendar-btn' onClick={()=>handleShowCalendar("show","end-input")}>
                         <Calendar className='view_ticket_filter__date-icon'/>   
                     </button>
                 </div>
@@ -78,7 +98,7 @@ export const ViewTicketFilter = () => {
             <div className='view_ticket_filter__btn-block'>
                 <button className='view_ticket_filter__btn btn'>Lọc</button>
             </div>
-        <MyCalendar inputName={inputName}/>
+            <MyCalendar setSelectedDay = {setSelectedDay}/>
         </div>
         
     )
