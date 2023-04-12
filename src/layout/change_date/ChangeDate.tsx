@@ -8,15 +8,33 @@ import { showCalendar } from '../calendar/CalendarSlice';
 import { MyCalendar } from '../calendar/Calendar';
 import { changeInputName } from '../../view/view_ticket_filter/inputNameSlice';
 
-export const ChangeDate:React.FC = () => {
-    const ChangeDateState = useSelector((state: RootState) => state.ChangeDate.Active_state);
+interface ChangeDateProps {
+    updateTicketListItem: (id: string, useDate: string, status:string) => Promise<void>
+}
 
+export const ChangeDate = ({updateTicketListItem}:ChangeDateProps) => {
+    const ChangeDateState = useSelector((state: RootState) => state.ChangeDate.Active_state);
+    const selectedID = useSelector((state: RootState) => state.ChangeDate.ID_item);
+    const ticketNumber = useSelector((state: RootState) => state.ChangeDate.TicketNumber);
+    const eventName = useSelector((state: RootState) => state.ChangeDate.EventName);
     const dispatch = useDispatch();
     const handleCancer = (active:string) => {
         dispatch(showChangeDate(active));
     }
     const handleSave = (active:string) => {
         dispatch(showChangeDate(active));
+        const today = new Date();
+        const todayArray = today.toISOString().slice(0, 10).split("-");
+        const useDayArray = useDayActive.split("/")
+        if ((parseInt(useDayArray[2]) > parseInt(todayArray[0])) 
+        || ( parseInt(useDayArray[2]) == parseInt(todayArray[0]) && parseInt(useDayArray[1]) > parseInt(todayArray[1]))
+        || ( parseInt(useDayArray[2]) == parseInt(todayArray[0]) && parseInt(useDayArray[1]) == parseInt(todayArray[1]) && parseInt(useDayArray[0]) > parseInt(todayArray[2]))) 
+        {
+            updateTicketListItem(selectedID, useDayActive, "Chưa sử dụng")
+        } else {
+            updateTicketListItem(selectedID, useDayActive, "Hết hạn")
+        }
+        
     }
 
     const handleShowCalendar = (active:string, input:string) => {
@@ -42,6 +60,12 @@ export const ChangeDate:React.FC = () => {
     useEffect(() => {
         
     }, [useDayActive]);
+    useEffect(() => {
+        
+    }, [ticketNumber]);
+    useEffect(() => {
+        
+    }, [eventName]);
 
     useEffect(() => {
         if (inputName === "start-input") {
@@ -56,10 +80,10 @@ export const ChangeDate:React.FC = () => {
     return (
         <div className='change-date-back' style={ChangeDateState == "hidden" ? {display:"none"} : {display:"block"}}>
             <div className='change-date'>
-                <h2 className='change-date__title'>Đổi ngày sử dụng vé</h2>
+                <h2 className='change-date__title'></h2>
                 <div className='change-date__ticket-id'>
                     <span>Số vé</span>
-                    <label className='change-date__ticket-id-name' htmlFor="">ABCXYZ@3455</label>
+                    <label className='change-date__ticket-id-name' htmlFor="">{ticketNumber}</label>
                 </div>
                 <div className='change-date__ticket-type'>
                     <span>Số vé</span>
@@ -67,7 +91,7 @@ export const ChangeDate:React.FC = () => {
                 </div>
                 <div className='change-date__event'>
                     <span>Tên sự kiện</span>
-                    <label className='change-date__event-name' htmlFor="">Lễ hội đua thuyền</label>
+                    <label className='change-date__event-name' htmlFor="">{eventName}</label>
                 </div>
                 <div className='change-date__expiry'>
                     <span>Hạn sử dụng</span>

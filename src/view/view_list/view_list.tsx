@@ -5,79 +5,59 @@ import { faPenToSquare, faCircle, faCaretRight, faCaretLeft, faEllipsisVertical 
 import {ticketListData, ticketCheckData, ticketPackData, renderFunction} from "./interface"
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../app/store"
-import { showChangeDate } from '../../layout/change_date/ChangeDateSlice';
-import { showPackUpdate } from '../../layout/pack_update/PackUpdateSlice';
+import { SelectedID, showChangeDate, TicketNumber, EventName } from '../../layout/change_date/ChangeDateSlice';
+import { changeIdState, showPackUpdate } from '../../layout/pack_update/PackUpdateSlice';
 import { db } from "../../firebase-config"
-import { collection,getDocs,addDoc,updateDoc,deleteDoc,doc, CollectionReference, DocumentData } from "firebase/firestore"
+import { collection,getDocs,addDoc,updateDoc,doc, CollectionReference, DocumentData } from "firebase/firestore"
+import { ChangeDate } from '../../layout/change_date/ChangeDate';
+import { changeViewSearch } from '../view_search/ViewSearchSlice';
+import { getListOfEventName } from '../view_ticket_filter/inputNameSlice';
 
 
 
 export const ViewList = () => {
     const selected = useSelector((state: RootState) => state.menu.selected);
-    const [list, setList] = React.useState<{ id: string }[]>([]);
     
     const listCollectionRef: CollectionReference<DocumentData> = collection(db, "ticket-list");
+    const checkCollectionRef: CollectionReference<DocumentData> = collection(db, "ticket-list");
     const packCollectionRef: CollectionReference<DocumentData> = collection(db, "ticket-pack");
 
-    console.log("Aaaaaâ")
-    console.log(listCollectionRef)
 
     let preViewArray: CollectionReference<DocumentData>;
     if (selected === "List") {
         preViewArray = listCollectionRef;
     } else if (selected === "Check") {
-        preViewArray = listCollectionRef;
+        preViewArray = checkCollectionRef;
     } else {
         preViewArray = packCollectionRef;
     }
-
-    const [bookingCode,setBookingCode] = useState("") 
-    const [ticketNumber,setTicketNumber] = useState("") 
-    const [eventName,setEventName] = useState("")
-    const [status,setStatus] = useState("") 
-    const [useDate,setUseDate] = useState("") 
-    const [useCreate,setUseCreate] = useState("") 
-    const [checkInGate,setCheckInGate] = useState("")
-    const [packId,setPackId] = useState("")
-    const [packName,setPackName] = useState("")
-    const [startDate,setStartDate] = useState("")
-    const [endDate,setEndDate] = useState("")
-    const [ticketPrice,setTicketPrice] = useState("")
-    const [comboPrice,setComboPrice] = useState("")
-    const [nullTitle,setNullTitle] = useState("")
+    // const createTicketListItem = async () => {
+    //     await addDoc(preViewArray, {
+    //         bookingCode:bookingCode,
+    //         ticketNumber:ticketNumber,
+    //         eventName:eventName,
+    //         status:status,
+    //         useDate:useDate,
+    //         useCreate:useCreate,
+    //         checkInGate:checkInGate,
+    //         nullTitle:nullTitle })}
 
 
-    
-
-    const createTicketListItem = async () => {
-        await addDoc(preViewArray, {
-            bookingCode:bookingCode,
-            ticketNumber:ticketNumber,
-            eventName:eventName,
-            status:status,
-            useDate:useDate,
-            useCreate:useCreate,
-            checkInGate:checkInGate,
-            nullTitle:nullTitle })}
-
-
-    const createTicketPackItem = async () => {
-        await addDoc(preViewArray, {
-            packId:packId,
-            packName:packName,
-            startDate:startDate,
-            endDate:endDate,
-            ticketPrice:ticketPrice,
-            comboPrice:comboPrice,
-            status:status,
-        })
-    } 
-
-    const updateTicketListItem = async (id:string, useDate:string) => {
+    const updateTicketListItem = async (id:string, useDate:string, status:string) => {
         const listDoc = doc(db, "ticket-list", id)
-        const updateUseDate = { useDate: useDate }
+        const updateUseDate = { useDate: useDate, status:status }
         await updateDoc(listDoc, updateUseDate)
     }
+
+    const checked = useSelector((state: RootState) => state.CheckBtn.Active_state);
+    useEffect(() => {
+        if(checked == "checked") {
+            const nodeListTicket = document.querySelectorAll('.null_title');
+            nodeListTicket.forEach((div) => {
+                updateTicketCheckItem(div.id)
+            });
+        }
+    }, [checked]);
 
     const updateTicketCheckItem = async (id:string) => {
         const listDoc = doc(db, "ticket-list", id)
@@ -85,27 +65,14 @@ export const ViewList = () => {
         await updateDoc(listDoc, updateNullTitle)
     }
 
-    const updateTicketPackItem = async (id:string, 
-                                        packId:string, 
-                                        packName:string, 
-                                        startDate:string, 
-                                        endDate:string, 
-                                        ticketPrice:string, 
-                                        comboPrice:string, 
-                                        status:string) => {
-        const listDoc = doc(db, "ticket-pack", id)
-        const updateUseDate = {
-            packId:packId,
-            packName:packName,
-            startDate:startDate,
-            endDate:endDate,
-            ticketPrice:ticketPrice,
-            comboPrice:comboPrice,
-            status:status, }
-        await updateDoc(listDoc, updateUseDate)
-    }
+    
+
+    
+    const [list, setList] = useState<any[]>([]);
+    const [newList, setNewList] = useState<any[]>([]);
 
     useEffect(() => {
+        dispatch(changeViewSearch(""))
         const getListTicket = async () => {
             const data = await getDocs(preViewArray);
             if (selected === "List") {
@@ -116,9 +83,83 @@ export const ViewList = () => {
                 setList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
             }
         };
-    
+        
         getListTicket();
     }, [selected]);
+
+    
+    const selectedID = useSelector((state: RootState) => state.ChangeDate.ID_item);
+    const searchValue = useSelector((state: RootState) => state.ViewSearch.value);
+    const [listOfEventName,setListOfEventName] = useState<string[]>([])
+    useEffect(() => {
+        const uniqueArr = listOfEventName.filter((value, index, self) => {
+            return self.indexOf(value) === index;
+          });
+        let listOfEventName_string:string = uniqueArr.join("__");
+        dispatch(getListOfEventName(listOfEventName_string))
+    }, [listOfEventName]);
+    useEffect(() => {
+        if ((selected === "List" || selected === "Check")){
+            setNewList(list.filter(data => data.ticketNumber.includes(searchValue)));
+        } else if (selected === "Pack") {
+            setNewList(list.filter(data => data.packId.includes(searchValue)));
+        }
+    }, [searchValue]);
+
+    useEffect(() => {
+        for (let i = 0; i < list.length; i++) {
+            setListOfEventName(prevState => prevState.concat(list[i].eventName));
+        }
+        setNewList(list)
+    }, [list]);
+
+
+    const filterStartDayOfList = useSelector((state: RootState) => state.TicketFilter.startDay);
+    const filterEndDayOfList = useSelector((state: RootState) => state.TicketFilter.endDay);
+    const filterStatusOfList = useSelector((state: RootState) => state.TicketFilter.status);
+    const filterCheckInGateOfList = useSelector((state: RootState) => state.TicketFilter.checkInGate);
+    const listFilterOfList = [filterStartDayOfList, filterEndDayOfList, filterStatusOfList, filterCheckInGateOfList]
+    const filterStartDayOfCheck = useSelector((state: RootState) => state.InputName.startDay);
+    const filterEndDayOfCheck = useSelector((state: RootState) => state.InputName.endDay);
+    const filterStatusOfCheck = useSelector((state: RootState) => state.InputName.status);
+    const filterEventNameOfCheck = useSelector((state: RootState) => state.InputName.eventName);
+    const listFilterOfCheck = [ filterEventNameOfCheck, filterStatusOfCheck, filterStartDayOfCheck, filterEndDayOfCheck]
+    useEffect(() => {
+        const isBetween = (date:string, start:string, end:string) => {
+            const dateArr = date.split("/")
+            const startArr = start.split("/")
+            const endArr = end.split("/")
+            const currentDate = new Date(`${dateArr[2]}-${dateArr[1]}-${dateArr[0]}`);
+            const startDate = new Date(`${startArr[2]}-${startArr[1]}-${startArr[0]}`);
+            const endDate = new Date(`${endArr[2]}-${endArr[1]}-${endArr[0]}`);
+            return currentDate >= startDate && currentDate <= endDate;
+        };
+        if (selected == "List") {
+            if (listFilterOfList[0] !== "" && listFilterOfList[1] !== "" && listFilterOfList[2] !== "" ) {
+                const filteredList = list.filter(data => (
+                    listFilterOfList[3].includes(data.checkInGate) || listFilterOfList[3].includes("Tất cả")
+                ) && (
+                    filterStatusOfList === data.status || filterStatusOfList === "Tất cả"
+                ) && isBetween(data.useDate, filterStartDayOfList, filterEndDayOfList));
+        
+                if (JSON.stringify(filteredList) !== JSON.stringify(newList)) {
+                    setNewList(filteredList);
+                }
+            }
+        } else if (selected == "Check"){
+            if (listFilterOfCheck[0] !== "" && listFilterOfCheck[1] !== "" && listFilterOfCheck[2] !== "" ) {
+                const filteredList = list.filter(data => (data.eventName == listFilterOfCheck[0])
+                && (data.status == listFilterOfCheck[1] || listFilterOfCheck[1] == "Tất cả")
+                && isBetween(data.useDate, filterStartDayOfCheck, filterEndDayOfCheck));
+                if (JSON.stringify(filteredList) !== JSON.stringify(newList)) {
+                    setNewList(filteredList);
+                }
+            }
+        }
+    }, [listFilterOfList, newList, listFilterOfCheck]);
+
+
+
 
     const ticketListTitles: Array<{title:string, class:string}> = 
     [
@@ -155,45 +196,60 @@ export const ViewList = () => {
 
     let count:number = 0;
     const dispatch = useDispatch();
-    const handleChangeDate = (active: string) => {
+    const handleChangeDate = (id:string, ticketNumber:string, eventName:string, active: string) => {
+        dispatch(SelectedID(id)); 
+        dispatch(TicketNumber(ticketNumber));
+        dispatch(EventName(eventName));
         dispatch(showChangeDate(active));
     };
 
-    function renderRowList(data:ticketListData,index:number) {
+    function renderRowList(data:ticketListData,index:number, id:string) {
         count++;
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
                 <div className='stt'>{count}</div>
                 <div className='booking_code'>{data.bookingCode}</div>
                 <div className='ticket_number'>{data.ticketNumber}</div>
-                <div className='event_name'>{data.eventName}</div>
+                <div className='event_name' style={{justifyContent:"left"}}>{data.eventName}</div>
                 <div className={data.status=="Hết hạn"?"status turn_off":data.status=="Chưa sử dụng"?"status turn_on":"status used"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} />{data.status}</span></div>
                 <div className='use_date'>{data.useDate}</div>
                 <div className='use_create'>{data.useCreate}</div>
-                <div className='check_in_gate'>{data.checkInGate} <button className='changeUseDateBtn' onClick={() => handleChangeDate("show")}><FontAwesomeIcon icon={faEllipsisVertical} /></button></div>
+                <div className='check_in_gate'>{data.checkInGate} 
+                    <button className='changeUseDateBtn' onClick={() => 
+                        handleChangeDate(id, data.ticketNumber, data.eventName,"show")}>
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                    </button>
+                </div>
             </div>
         )
     }
 
-    function renderRowCheck(data:ticketCheckData,index:number){
+    function renderRowCheck(data:ticketCheckData,index:number, id:string){
         count++;
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
                 <div className='stt-2'>{count}</div>
                 <div className='ticket_number-2'>{data.ticketNumber}</div>
-                <div className='event_name-2'>{data.eventName}</div>
+                <div className='event_name-2' style={{justifyContent:"left"}}>{data.eventName}</div>
                 <div className='use_date-2'>{data.useDate}</div>
                 <div className='type_ticket'>{"Vé cổng"}</div>
                 <div className='check_in_gate-2'>{data.checkInGate}</div>
-                <div className={data.nullTitle=="Chưa đối soát"?"null_title":"null_title checked"}><i>{data.nullTitle}</i></div>
+                <div id={id} className={data.nullTitle=="Chưa đối soát"?"null_title":"null_title checked"}><i>{data.nullTitle}</i></div>
             </div>
         )
     }
 
-    const handleShowPackUpdate = (active:string) => {
+    
+    const handleShowPackUpdate = (
+        active:string, id:string
+        ) => {
         dispatch(showPackUpdate(active));
+        dispatch(changeIdState(id))
+        // dispatch(getInfoTicket({packId, packName, 
+        //     startDate, endDate, ticketPrice, 
+        //     comboPrice, status}))
     }
-    function renderRowPack(data:ticketPackData,index:number){
+    function renderRowPack(data:ticketPackData,index:number, id:string){
         count++;
         return (
             <div key={index} className={count%2==1?'view-list__row':'view-list__row even_row'}>
@@ -204,8 +260,17 @@ export const ViewList = () => {
                 <div className='end_date'>{data.endDate}</div>
                 <div className='ticket_price'>{data.ticketPrice}</div>
                 <div className='combo_price'>{data.comboPrice}</div>
-                <div className={data.status=="Tắt"?"status turn_off":"status turn_on"}><span><FontAwesomeIcon className='status-icon' icon={faCircle} /> {data.status}</span></div>
-                <button onClick={()=>handleShowPackUpdate("show")} className='null_title update_btn'><FontAwesomeIcon className='update-icon' icon={faPenToSquare} />Cập nhật </button>
+                <div className={data.status=="Tắt"?"status turn_off":"status turn_on"}>
+                    <span>
+                        <FontAwesomeIcon className='status-icon' icon={faCircle} />
+                         {data.status}
+                    </span>
+                </div>
+                <button onClick={()=>handleShowPackUpdate("show", id)} 
+                    className='null_title update_btn'>
+                    <FontAwesomeIcon className='update-icon' icon={faPenToSquare} />
+                    Cập nhật 
+                </button>
             </div>
         )
     }
@@ -226,7 +291,8 @@ export const ViewList = () => {
         renderRow = renderRowPack
     }
 
-
+    
+    
     return (
         <div className='view-list'>
             <div className='view-list__container'>
@@ -236,9 +302,9 @@ export const ViewList = () => {
                     }
                 </div>
                 {
-                    (list).map((data, index) => 
+                    (newList).map((data, index) => 
                     {
-                        return renderRow(data,index)
+                        return renderRow(data,index,data.id)
                     })
                 }
             </div>
@@ -251,6 +317,7 @@ export const ViewList = () => {
                 <span className='view-list__footer-item'>20</span>
                 <FontAwesomeIcon className='view-list__footer-caret caret-active' icon={faCaretRight} />
             </div>
+            <ChangeDate updateTicketListItem = {updateTicketListItem}/>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showTicketFilter } from '../../../layout/ticket_filter/TicketFilterSlice';
 import { RootState } from '../../../app/store';
 import { showPackAdd } from '../../../layout/pack_add/PackAddSlice';
+import { changeCheckBtn } from './CheckBtnSlice';
 
 
 
@@ -14,6 +15,8 @@ const TicketListBtn = () => {
     const handleShowFilter = (active:string) => {
         dispatch(showTicketFilter(active));
     }
+
+    
     return (
         <div className='view-search-btn'>
             <button className='view-search-btn__filter btn' onClick={() => handleShowFilter("show")}>
@@ -24,10 +27,15 @@ const TicketListBtn = () => {
     )
 }
 
+
 const TicketCheckBtn = () => {
+    const dispatch = useDispatch();
+    const handleCheckTicket = (active:string) => {
+        dispatch(changeCheckBtn(active));
+    }
     return (
         <div className='view-search-btn'>
-            <button className='view-search-btn__check btn primary-btn'>Chốt đối soát</button>
+            <button className='view-search-btn__check btn primary-btn' onClick={()=>handleCheckTicket("checked")}>Chốt đối soát</button>
         </div>
     )
 }

@@ -3,7 +3,7 @@ import "./TicketFilter.css"
 import {Calendar} from "react-feather"
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../app/store';
-import { showTicketFilter } from "./TicketFilterSlice";
+import { getListFilter, showTicketFilter } from "./TicketFilterSlice";
 import { showCalendar } from "../calendar/CalendarSlice";
 import { MyCalendar } from "../calendar/Calendar";
 import { changeInputName } from "../../view/view_ticket_filter/inputNameSlice";
@@ -14,6 +14,7 @@ export const TicketFilter:React.FC = () => {
     const TicketFilterState = useSelector((state: RootState) => state.TicketFilter.Active_state);
     const dispatch = useDispatch();
     const handleShowFilter = (active:string) => {
+        dispatch(getListFilter({startDayActive, endDayActive, selectedRadioOption, CheckBoxValues}))
         dispatch(showTicketFilter(active));
     }
     
@@ -56,12 +57,14 @@ export const TicketFilter:React.FC = () => {
         setSelectedRadioOption(event.target.value);
     };
     useEffect(() => {
-        console.log(selectedRadioOption)
+        
     }, [selectedRadioOption]);
 
 
     const [CheckBoxValues, setCheckBoxValues] = useState<string[]>([]);
-
+    useEffect(() => {
+        
+    }, [CheckBoxValues]);
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, checked } = event.target;
         if (value === "Tất cả") {

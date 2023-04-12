@@ -34,5 +34,5 @@ export interface ticketPackData{
 }
 
 export interface renderFunction {
-    (data:any,index:number):JSX.Element
+    (data:any,index:number,id:string):JSX.Element
 }
